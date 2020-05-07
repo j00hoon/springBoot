@@ -15,12 +15,21 @@ import javax.persistence.ManyToMany;
 @Entity
 public class Employee 
 {
+	// @GeneratedValue(strategy = GenerationType.AUTO)에서 AUTO는 hibernate가 id의 값을 
+	// 자동으로 increase 해주길 원할 때 쓴다. 예를 들어, 
+	// data.sql 파일이 없다고 가정한다면, 우리가 data를 DB에 넣어줘야 하는데 
+	// DB에 넣어줄 때, hibernate가 id를 자동으로 increase 해준다는 소리.
+	// 하지만, 우리가 data.sql 파일을 쓴다면 처음부터 insert를 이용하여 데이터를 DB에 넣으므로 
+	// hibernate는 데이터가 들어갔는지 알지 못하므로, 그대로 AUTO로 쓰게된다면 id를 1부터 쓰기 때문에
+	// id 중복이 일어난다. employeeId가 PK라면, 중복으로 error가 발생.
+	//@GeneratedValue(strategy = GenerationType.AUTO)
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long employeeId;
 	
-	private String firstName;
-	private String lastName;
+	private String first_name;
+	private String last_name;
 	private String email;
 	
 	// JoinColumn의 name이 Employee table에서 FK로써 Project로부터 값을 reference하게 된다
@@ -51,11 +60,11 @@ public class Employee
 	
 	public Employee() {}
 	
-	public Employee(String firstName, String lastName, String email) 
+	public Employee(String first_name, String last_name, String email) 
 	{
 		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
+		this.first_name = first_name;
+		this.last_name = last_name;
 		this.email = email;
 	}
 	
@@ -84,20 +93,22 @@ public class Employee
 		this.employeeId = employeeId;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	
+
+	public String getFirst_name() {
+		return first_name;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setFirst_name(String first_name) {
+		this.first_name = first_name;
 	}
 
-	public String getLastName() {
-		return lastName;
+	public String getLast_name() {
+		return last_name;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setLast_name(String last_name) {
+		this.last_name = last_name;
 	}
 
 	public String getEmail() {

@@ -17,15 +17,17 @@ import javax.persistence.ManyToMany;
 public class Project 
 {
 	// @Id의 뜻은 application에게 projectId가 unique한 identifier라는 것을 알려주는 annotation
+//	@GeneratedValue(strategy = GenerationType.AUTO)
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long projectId;
 	
-	private String projectName;
+	private String project_name;
 	
-	private String projectStage; // NONSTARTED, COMPLETED, INPROGRESS
+	private String project_stage; // NONSTARTED, COMPLETED, INPROGRESS
 	
-	private String projectDesc;
+	private String project_desc;
 	
 	// One to Many relationship -> One Project can have Many Employees
 //	@OneToMany(mappedBy="project")
@@ -49,12 +51,11 @@ public class Project
 		
 	// The constructor has no projectId variable. Why?
 	// Want to make DB generates id number automatically  
-	public Project(String projectName, String projectStage, String projectDesc) 
-	{
+	public Project(String project_name, String project_stage, String project_desc) {
 		super();
-		this.projectName = projectName;
-		this.projectStage = projectStage;
-		this.projectDesc = projectDesc;
+		this.project_name = project_name;
+		this.project_stage = project_stage;
+		this.project_desc = project_desc;
 	}
 	
 	
@@ -62,6 +63,8 @@ public class Project
 	public List<Employee> getEmployee() {
 		return employee;
 	}
+
+	
 
 	public void setEmployee(List<Employee> employee) {
 		this.employee = employee;
@@ -73,24 +76,32 @@ public class Project
 	public void setProjectId(long projectId) {
 		this.projectId = projectId;
 	}
-	public String getProjectName() {
-		return projectName;
+
+	public String getProject_name() {
+		return project_name;
 	}
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
+
+	public void setProject_name(String project_name) {
+		this.project_name = project_name;
 	}
-	public String getProjectStage() {
-		return projectStage;
+
+	public String getProject_stage() {
+		return project_stage;
 	}
-	public void setProjectStage(String projectStage) {
-		this.projectStage = projectStage;
+
+	public void setProject_stage(String project_stage) {
+		this.project_stage = project_stage;
 	}
-	public String getProjectDesc() {
-		return projectDesc;
+
+	public String getProject_desc() {
+		return project_desc;
 	}
-	public void setProjectDesc(String projectDesc) {
-		this.projectDesc = projectDesc;
+
+	public void setProject_desc(String project_desc) {
+		this.project_desc = project_desc;
 	}
+	
+	
 
 	
 }

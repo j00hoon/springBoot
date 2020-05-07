@@ -21,8 +21,8 @@
 			</thead>
 			<tbody>
 				<tr th:each="aProject : ${projectsList}">
-					<td th:text="${aProject.projectName}" />
-					<td th:text="${aProject.projectStage}" />
+					<td th:text="${aProject.project_name}" />
+					<td th:text="${aProject.project_stage}" />
 				</tr>		
 			</tbody>
 		</table>
@@ -44,8 +44,8 @@
 			</thead>
 			<tbody>
 				<tr th:each="aEmployee : ${employeesList}">
-					<td th:text="${aEmployee.firstName}" >
-					<td th:text="${aEmployee.lastName}" >
+					<td th:text="${aEmployee.first_name}" >
+					<td th:text="${aEmployee.last_name}" >
 					<td th:text="${aEmployee.email}" >
 				</tr>
 			</tbody>
