@@ -1,5 +1,7 @@
 package com.springProj.pma.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.springProj.pma.dao.EmployeeRepository;
 import com.springProj.pma.entity.Employee;
+import com.springProj.pma.entity.Project;
 
 @Controller
 @RequestMapping("/employees")
@@ -23,7 +26,7 @@ public class EmployeeController
 		Employee aEmployee = new Employee();
 		
 		model.addAttribute("aEmployee", aEmployee);
-		return "new-employee";		
+		return "employees/new-employee";		
 	}
 	
 	@PostMapping("/register")
@@ -33,6 +36,15 @@ public class EmployeeController
 		empRepo.save(emp);
 		
 		return "redirect:/employees/new";
+	}
+	
+	@GetMapping
+	public String listEmployee(Model model)
+	{
+		List<Employee> list = empRepo.findAll();
+		model.addAttribute("listEmp", list);
+		
+		return "employees/list-employee";		
 	}
 
 }

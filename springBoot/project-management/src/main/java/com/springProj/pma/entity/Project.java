@@ -1,9 +1,16 @@
 package com.springProj.pma.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 // 이 class structure는 db의 table structure와 같다
 @Entity
@@ -20,6 +27,23 @@ public class Project
 	
 	private String projectDesc;
 	
+	// One to Many relationship -> One Project can have Many Employees
+//	@OneToMany(mappedBy="project")
+//	private List<Employee> employee;
+	
+	// OneToMany에서 바꾸는 이유는 
+	// 각 employee들이 여러개의 Project에 assign 가능하도록 하기 위하여 
+	
+	// JoinTable은 이제 ManyToMany relationship이므로, Project와 Employee table들을 Join하여 관리하기 위해서 
+	// JoinColumn의 name은 Project table에서 사용할 FK의 이름
+	// inverseJoinColumns은 2개의 table이 join하므로, 반대편 column의 정보를 적어주는 것?
+	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST}, 
+			fetch = FetchType.LAZY)
+	@JoinTable(name="Project_Employee", 
+	joinColumns=@JoinColumn(name="project_id"), 
+	inverseJoinColumns=@JoinColumn(name="employee_id"))
+	private List<Employee> employee;
+	
 	
 	public Project() {}
 		
@@ -33,6 +57,16 @@ public class Project
 		this.projectDesc = projectDesc;
 	}
 	
+	
+	
+	public List<Employee> getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(List<Employee> employee) {
+		this.employee = employee;
+	}
+
 	public long getProjectId() {
 		return projectId;
 	}
@@ -57,6 +91,6 @@ public class Project
 	public void setProjectDesc(String projectDesc) {
 		this.projectDesc = projectDesc;
 	}
-	
+
 	
 }

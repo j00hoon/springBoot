@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace = "layouts :: header"></head>
+
+<body>
+
+<nav th:replace = "layouts :: navbarHead"></nav>
+
+	<div class="container">
+		<form action="/projects/save" method="post" th:object="${aProject}">
+		
+		<input type="text" placeholder="Project Name" th:field="${aProject.projectName}">
+		
+		<select th:field="${aProject.projectStage}">
+			<option th:value="NOTSTARTED"> Not Started</option>
+			<option th:value="INPROGRESS"> In Progress</option>
+			<option th:value="COMPLETED"> Completed</option>
+		</select>
+		
+		<textarea type="text" placeholder="Enter Project Description" th:field="${aProject.projectDesc}"></textarea>
+		
+		<!-- $는 project의 name으로 접근할 때, *는 project의 employee property에 접근할 때 -->
+		<!-- *{employee}는 위의 form에서 가져오는 th:object의 part이다  -->
+		<!-- Project.java가 갖고 있는 List<Employee>의 변수 이름이 employee이다. 헷갈리지마 -->
+		<!-- 그냥 $와 쓰는 방법만 다를 뿐. $를 쓰면 aProject.~~ 처럼 object.name으로 접근을 해야하지만, *는  object없이 바로 name으로 접근이 가능 -->
+		<select th:field="*{employee}" multiple="multiple">
+			<option th:each="employee : ${allEmployees}"
+				th:value="${employee.employeeId}" 
+				th:text="${employee.firstName}">
+			</option>			
+		</select>
+		
+		<button type="submit">Create Project</button>
+		
+		</form>
+	</div>
+
+
+</body>
+
+</html>
