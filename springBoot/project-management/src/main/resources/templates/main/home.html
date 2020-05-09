@@ -7,51 +7,86 @@
 <body>
 
 	<nav th:replace = "layouts :: navbarHead"></nav>
-
-	<div>
-		<h4> Current Projects </h4>
-		<a th:href="@{/projects/new}" class="btn btn-primary btn-sm mb-3">Create New Project</a>
+	
+		<div class="container">
 		
-		<table class="table table-bordered table-striped">
-			<thead class="thead-dark">
-				<tr>
-					<th> Projects Name </th>
-					<th> Projects Stage </th>
-				</tr>		
-			</thead>
-			<tbody>
-				<tr th:each="aProject : ${projectsList}">
-					<td th:text="${aProject.project_name}" />
-					<td th:text="${aProject.project_stage}" />
-				</tr>		
-			</tbody>
-		</table>
-	</div>
-	
-	
-	
-	<div>
-		<h4> Current Employees </h4>
-		<a th:href="@{/employees/new}" class="btn btn-primary btn-sm mb-3">Register New Employee</a>
+		<h3>Main Dashboard</h3>
+		<a th:text="${version}"></a>
+		<hr>
+			<h4> Current Projects </h4>
+			<div class="row">
+				<div class="col-md-6">
+					
+					<a th:href="@{/projects/new}" class="btn btn-primary btn-sm mb-3">Create New Project</a>
+					
+					<table class="table table-bordered table-striped">
+						<thead class="thead-dark">
+							<tr>
+								<th> Projects Name </th>
+								<th> Projects Stage </th>
+							</tr>		
+						</thead>
+						<tbody>
+							<tr th:each="aProject : ${projectList}">
+								<td th:text="${aProject.project_name}" />
+								<td th:text="${aProject.project_stage}" />
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col-md-4">
+					<canvas id="myPieChart" height="50" width="50"></canvas>
+					
+					<script>
+						/* JavaScript에서 model의 value를 쓰기 위해서 써야 하는 방법 */
+						var chartData = "[[${projectStageCnt}]]";
+					</script>
+					
+				</div>
+			</div>
+			
+		</div>
 		
-		<table class="table table-bordered table-striped">
-			<thead class="thead-dark">
-				<tr>
-					<th> Employee First Name </th>
-					<th> Employee Last Name </th>
-					<th> Employee Email </th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="aEmployee : ${employeesList}">
-					<td th:text="${aEmployee.first_name}" >
-					<td th:text="${aEmployee.last_name}" >
-					<td th:text="${aEmployee.email}" >
-				</tr>
-			</tbody>
-		</table>
-	</div>
+		
+		<div class="container">
+		
+			<h4> Current Employees </h4>
+			<div class="row">
+				<div class="col-md-6">
+					
+					<a th:href="@{/employees/new}" class="btn btn-primary btn-sm mb-3">Register New Employee</a>
+					
+					<table class="table table-bordered table-striped">
+						<thead class="thead-dark">
+							<tr>
+								<th> Employee First Name </th>
+								<th> Employee Last Name </th>
+								<!-- <th> Employee Email </th> -->
+								<th> Project Count </th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- <tr th:each="aEmployee : ${employeesList}">
+								<td th:text="${aEmployee.first_name}" >
+								<td th:text="${aEmployee.last_name}" >
+								<td th:text="${aEmployee.email}" >
+							</tr> -->
+							
+							<tr th:each="aEmployeeProjectCnt : ${employeesListProjectCnt}">
+								<td th:text="${aEmployeeProjectCnt.firstName}" >
+								<td th:text="${aEmployeeProjectCnt.lastName}" >
+								<td th:text="${aEmployeeProjectCnt.projectCount}" >
+							</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
+		</div>
+		
 
+<script type="text/javascript" th:src="@{/js/myChart.js}"></script>
 
 </body>
 
