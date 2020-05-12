@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.springProj.pma.dao.EmployeeRepository;
-import com.springProj.pma.dao.ProjectRepository;
 import com.springProj.pma.dto.EmployeeProject;
 import com.springProj.pma.dto.ProjectStage;
 import com.springProj.pma.entity.Project;
+import com.springProj.pma.services.EmployeeService;
+import com.springProj.pma.services.ProjectService;
 
 @Controller
 public class HomeController 
@@ -29,10 +29,17 @@ public class HomeController
 	private String ver;
 	
 	@Autowired
-	ProjectRepository proRepo;
+	ProjectService proService;
 	
 	@Autowired
-	EmployeeRepository empRepo;
+	EmployeeService empService;
+	
+	
+//	@Autowired
+//	ProjectRepository proRepo;
+//	
+//	@Autowired
+//	EmployeeRepository empRepo;
 	
 	@GetMapping("/")
 	public String displayHome(Model model) throws JsonProcessingException
@@ -44,13 +51,15 @@ public class HomeController
 		Map<String, Object> map = new HashMap<>();
 		
 		// querying the database for projects -> projectName, projectStage
-		List<Project> projects = proRepo.findAll();
+		//List<Project> projects = proRepo.findAll();
+		List<Project> projects = proService.getAll();
 		model.addAttribute("projectList", projects);
 		
 		
 		
 		// Pie Chart //
-		List<ProjectStage> projectStageCnt = proRepo.projectStage();
+		//List<ProjectStage> projectStageCnt = proRepo.projectStage();
+		List<ProjectStage> projectStageCnt = proService.getProjectStage();
 		
 		// Lets convert projectStageCnt object into a json structure for use in javascript
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -68,7 +77,8 @@ public class HomeController
 		//List<Employee> employees = empRepo.findAll();
 
 		// querying the database for employees -> firstName, lastName, projectCount
-		List<EmployeeProject> employeesProjectCnt = empRepo.employeeProjects();
+		//List<EmployeeProject> employeesProjectCnt = empRepo.employeeProjects();
+		List<EmployeeProject> employeesProjectCnt = empService.employeeProjects();
 		model.addAttribute("employeesListProjectCnt", employeesProjectCnt);
 		
 		return "main/home";

@@ -19,9 +19,16 @@ import com.springProj.pma.services.EmployeeService;
 @RequestMapping("/employees")
 public class EmployeeController 
 {
-	// 1 // Field Injection
 	@Autowired
-	EmployeeRepository empRepo;
+	EmployeeService empService;
+	// EmployeeRepository가 아닌 EmployeeService를 사용하는 이유???
+	// DB와 연결할 때 문제가 생겼으면, service code만 고치면 된다. 
+	// Controller는 DB연결과는 상관 없는 부분으로 만들기 위하여
+	
+	
+	// 1 // Field Injection
+//	@Autowired
+//	EmployeeRepository empRepo;
 	
 	
 	
@@ -50,6 +57,20 @@ public class EmployeeController
 	
 	
 	
+	
+	@GetMapping
+	public String listEmployee(Model model)
+	{
+		List<Employee> list = empService.getAll();
+		model.addAttribute("listEmp", list);
+		
+//		List<Employee> list = empRepo.findAll();
+//		model.addAttribute("listEmp", list);
+		
+		return "employees/list-employee";		
+	}
+	
+	
 	@GetMapping("/new")
 	public String displayEmployeeForm(Model model)
 	{
@@ -63,19 +84,13 @@ public class EmployeeController
 	@PostMapping("/register")
 	public String registerEmployee(Employee emp, Model model)
 	{
+		empService.save(emp);
+		
+		
 		// save to the database using an employee crud repository
-		empRepo.save(emp);
+		//empRepo.save(emp);
 		
 		return "redirect:/employees/new";
-	}
-	
-	@GetMapping
-	public String listEmployee(Model model)
-	{
-		List<Employee> list = empRepo.findAll();
-		model.addAttribute("listEmp", list);
-		
-		return "employees/list-employee";		
 	}
 
 }

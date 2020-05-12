@@ -8,28 +8,36 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.springProj.pma.dao.EmployeeRepository;
-import com.springProj.pma.dao.ProjectRepository;
 import com.springProj.pma.entity.Employee;
 import com.springProj.pma.entity.Project;
+import com.springProj.pma.services.EmployeeService;
+import com.springProj.pma.services.ProjectService;
 
 @Controller
 @RequestMapping("/projects")
 public class ProjectController 
 {
 	@Autowired
-	ProjectRepository proRepo;
+	ProjectService proService;
 	
 	@Autowired
-	EmployeeRepository empRepo;
+	EmployeeService empService;
+	
+	
+	
+//	@Autowired
+//	ProjectRepository proRepo;
+//	
+//	@Autowired
+//	EmployeeRepository empRepo;
 	
 	@GetMapping("/new")
 	public String displayProjectForm(Model model)
 	{
 		Project aProject = new Project();
-		List<Employee> employee = empRepo.findAll();
+		List<Employee> employee = empService.getAll();
+		//List<Employee> employee = empRepo.findAll();
 		
 		model.addAttribute("aProject", aProject);
 		model.addAttribute("allEmployees", employee);
@@ -46,8 +54,10 @@ public class ProjectController
 	@PostMapping("/save")
 	public String createProject(Project proj, /*@RequestParam List<Long> employee,*/ Model model)
 	{
+		proService.save(proj);
+		
 		// This method should handle saving to the database
-		proRepo.save(proj);
+		//proRepo.save(proj);
 		
 		/////////////////////////////////////////////////////////
 		// 이 부분은 우리가 Project와 Employee가 OneToMany relationship이었을 때, employee에 assign된 projectId를 
@@ -82,7 +92,8 @@ public class ProjectController
 	@GetMapping
 	public String listProject(Model model)
 	{
-		List<Project> list = proRepo.findAll();
+		//List<Project> list = proRepo.findAll();
+		List<Project> list = proService.getAll();
 		model.addAttribute("listProj", list);
 		
 		return "projects/list-project";		
