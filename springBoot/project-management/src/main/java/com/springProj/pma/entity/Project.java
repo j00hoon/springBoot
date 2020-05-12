@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 
 // 이 class structure는 db의 table structure와 같다
 @Entity
@@ -20,8 +21,9 @@ public class Project
 //	@GeneratedValue(strategy = GenerationType.AUTO)
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long projectId;
+	@SequenceGenerator(name="project_seq_gen", sequenceName = "project_seq", allocationSize=1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="project_seq_gen")
+	private long project_id;
 	
 	private String project_name;
 	
@@ -42,8 +44,8 @@ public class Project
 	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST}, 
 			fetch = FetchType.LAZY)
 	@JoinTable(name="Project_Employee", 
-	joinColumns=@JoinColumn(name="project_id"), 
-	inverseJoinColumns=@JoinColumn(name="employee_id"))
+	joinColumns=@JoinColumn(name="projectId"), 
+	inverseJoinColumns=@JoinColumn(name="employeeId"))
 	private List<Employee> employee;
 	
 	
@@ -71,10 +73,10 @@ public class Project
 	}
 
 	public long getProjectId() {
-		return projectId;
+		return project_id;
 	}
-	public void setProjectId(long projectId) {
-		this.projectId = projectId;
+	public void setProjectId(long project_id) {
+		this.project_id = project_id;
 	}
 
 	public String getProject_name() {

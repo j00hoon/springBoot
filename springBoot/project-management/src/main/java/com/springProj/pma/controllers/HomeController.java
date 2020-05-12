@@ -25,7 +25,7 @@ public class HomeController
 	// 내가 만들어주었던 version=0.1.0 의 값을 이용할 수 있다.
 	// ver variable에 0.1.0의 값이 들어간 상태
 	// Ex, displayHome()을 보면
-	@Value("${version}")
+	@Value("${envVersion}")
 	private String ver;
 	
 	@Autowired
@@ -38,7 +38,7 @@ public class HomeController
 	public String displayHome(Model model) throws JsonProcessingException
 	{
 		// @Value annotation 값 사용하기
-		model.addAttribute("version", ver);
+		model.addAttribute("envVersion", ver);
 		
 		
 		Map<String, Object> map = new HashMap<>();
@@ -49,7 +49,7 @@ public class HomeController
 		
 		
 		
-		
+		// Pie Chart //
 		List<ProjectStage> projectStageCnt = proRepo.projectStage();
 		
 		// Lets convert projectStageCnt object into a json structure for use in javascript

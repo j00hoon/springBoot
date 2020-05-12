@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class Employee 
@@ -24,9 +25,14 @@ public class Employee
 	// id 중복이 일어난다. employeeId가 PK라면, 중복으로 error가 발생.
 	//@GeneratedValue(strategy = GenerationType.AUTO)
 	
+	// @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="employee_seq")
+	// postgreSql을 사용하면서, PK가 nextval 하나씩 증가하는 sequence로 바뀌어서 GenerationType도 SEQUENCE로 바꿈. 
+	// 바꿔야지 hibernate가 더 빨리 인식함
+	// generator는 이 PK를 생성하는 sequence의 이름을 적어주면 된다
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long employeeId;
+	@SequenceGenerator(name="employee_seq_gen", sequenceName = "employee_seq", allocationSize=1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="employee_seq_gen")
+	private long employee_id;
 	
 	private String first_name;
 	private String last_name;
@@ -54,8 +60,8 @@ public class Employee
 	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST}, 
 			fetch = FetchType.LAZY)
 	@JoinTable(name="Project_Employee", 
-	joinColumns=@JoinColumn(name="employee_id"), 
-	inverseJoinColumns=@JoinColumn(name="project_id"))
+	joinColumns=@JoinColumn(name="employeeId"), 
+	inverseJoinColumns=@JoinColumn(name="projectId"))
 	private List<Project> project;
 	
 	public Employee() {}
@@ -86,11 +92,11 @@ public class Employee
 	}
 	
 	public long getEmployeeId() {
-		return employeeId;
+		return employee_id;
 	}
 
-	public void setEmployeeId(long employeeId) {
-		this.employeeId = employeeId;
+	public void setEmployeeId(long employee_id) {
+		this.employee_id = employee_id;
 	}
 
 	

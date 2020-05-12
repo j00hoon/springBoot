@@ -5,12 +5,12 @@ import org.springframework.stereotype.Service;
 
 import com.springProj.pma.dao.EmployeeRepository;
 
-//@Service
+@Service
 public class EmployeeService 
 {
 	// 1
-	//@Autowired
-	//EmployeeRepository empRepo;
+	@Autowired
+	EmployeeRepository empRepo;
 
 	
 	
@@ -26,13 +26,13 @@ public class EmployeeService
 	
 	
 	// 3
-	EmployeeRepository empRepo;
-	
-	@Autowired
-	public void setEmpRepo(EmployeeRepository empRepo) 
-	{
-		this.empRepo = empRepo;
-	}
+//	EmployeeRepository empRepo;
+//	
+//	@Autowired
+//	public void setEmpRepo(EmployeeRepository empRepo) 
+//	{
+//		this.empRepo = empRepo;
+//	}
 	
 	
 	
@@ -50,6 +50,19 @@ public class EmployeeService
 	
 	
 	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	// Test //////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
 	// 1 //
