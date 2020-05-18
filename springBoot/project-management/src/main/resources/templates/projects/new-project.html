@@ -9,7 +9,7 @@
 <nav th:replace = "layouts :: navbarHead"></nav>
 
 	<div class="container">
-		<form action="/projects/save" method="post" th:object="${aProject}">
+		<form th:action="@{/projects/save}" method="post" th:object="${aProject}">
 		
 		<input type="text" placeholder="Project Name" th:field="${aProject.project_name}">
 		
@@ -31,6 +31,22 @@
 				th:text="${employee.first_name}">
 			</option>			
 		</select>
+		
+		
+		
+		
+		<!-- "/register/save" end point에서는 "redirect"를 사용하고 있다 -->
+		<!-- "redirect"는 form과 함께 "csrf token"가 필요하다 -->
+		<!-- Therefore, form의 submit 버튼 전 그리고 마지막 input 후에 "input hidden"으로 csrf token을 같이 form과 함께 보내야한다 -->
+		<!-- 이 "csrf token"은 server에서 보내주는 것이다 -->
+		
+		<!-- <input type="hidden" name="_csrf" th:value="${_csrf.token}"/> -->
+		
+		<!-- form action을 thymeleaf action으로 사용하면, "th:action" 우리는 위의 hidden 코드도 필요없다!!! -->
+				
+				
+				
+		
 		
 		<button type="submit">Create Project</button>
 		

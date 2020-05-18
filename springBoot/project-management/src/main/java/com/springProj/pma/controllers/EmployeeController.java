@@ -90,7 +90,7 @@ public class EmployeeController
 		// save to the database using an employee crud repository
 		//empRepo.save(emp);
 		
-		return "redirect:/employees/new";
+		return "redirect:/employees";
 	}
 
 }
