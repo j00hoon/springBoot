@@ -19,7 +19,7 @@ public class EmployeeService
 	
 	
 	
-	public List<Employee> getAll() 
+	public Iterable<Employee> getAll() 
 	{
 		return empRepo.findAll();
 	}

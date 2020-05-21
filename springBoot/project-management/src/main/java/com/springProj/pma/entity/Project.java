@@ -13,6 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 // 이 class structure는 db의 table structure와 같다
 @Entity
 public class Project 
@@ -31,12 +33,15 @@ public class Project
 	
 	private String project_desc;
 	
+	
 	// One to Many relationship -> One Project can have Many Employees
 //	@OneToMany(mappedBy="project")
 //	private List<Employee> employee;
 	
+	
 	// OneToMany에서 바꾸는 이유는 
 	// 각 employee들이 여러개의 Project에 assign 가능하도록 하기 위하여 
+	
 	
 	// JoinTable은 이제 ManyToMany relationship이므로, Project와 Employee table들을 Join하여 관리하기 위해서 
 	// JoinColumn의 name은 Project table에서 사용할 FK의 이름
@@ -46,6 +51,7 @@ public class Project
 	@JoinTable(name="Project_Employee", 
 	joinColumns=@JoinColumn(name="projectId"), 
 	inverseJoinColumns=@JoinColumn(name="employeeId"))
+	@JsonIgnore
 	private List<Employee> employee;
 	
 	

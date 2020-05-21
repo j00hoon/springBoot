@@ -10,8 +10,8 @@ import com.springProj.pma.entity.Employee;
 
 public interface EmployeeRepository extends CrudRepository<Employee, Long>
 {
-	@Override
-	public List<Employee> findAll();
+//	@Override
+//	public List<Employee> findAll();
 	
 	@Query(nativeQuery=true, value="select e.first_name as FirstName, e.last_name as LastName, count(pe.employee_id) as ProjectCount " + 
 			"from employee e left join project_employee pe " + 

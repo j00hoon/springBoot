@@ -52,7 +52,7 @@ public class HomeController
 		
 		// querying the database for projects -> projectName, projectStage
 		//List<Project> projects = proRepo.findAll();
-		List<Project> projects = proService.getAll();
+		Iterable<Project> projects = proService.getAll();
 		model.addAttribute("projectList", projects);
 		
 		

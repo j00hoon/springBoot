@@ -77,7 +77,7 @@ public class ProjectRepositoryIntegrationTest
 		Project newProject = new Project("New Test Project", "COMPLETE", "Test Description");
 		proRepo.save(newProject);
 		
-		assertEquals(5, proRepo.findAll().size());
+		assertEquals(5, proRepo.count());
 		
 	}
 	

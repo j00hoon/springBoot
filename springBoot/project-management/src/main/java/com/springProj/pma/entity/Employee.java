@@ -3,6 +3,7 @@ package com.springProj.pma.entity;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Employee 
@@ -34,9 +40,41 @@ public class Employee
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="employee_seq_gen")
 	private long employee_id;
 	
+	
+	
+	
+	
+	
+	
+	// @NotNull은 null값이 들어올 수 없다는 constraint
+	// @Size(min = 2, max = 50) 은 min은 2 characters, max는 50 characters
+	// @Email은 email type? email format? constraint
+	// @Column(unique = true, nullable = false) 은 unique한 email이어야하고, NotNull의 또 다른 표현 방식
+	
+	// @NotNull, @Size, @Email은 javax.validation 즉, java code의 controller level에서 validation을 조사한다 
+	// 그러므로, code를 compile 할 때 이미 validation check를 해서 확인
+	// 하지만, @Column은 javax.persistence 즉, DB level에서 validation을 확인하므로, DB에서 작업을 할 때 validation 조사를 한다
+	// Error가 나는 시점이 다른 것
+	
+	
+	@NotNull
+	@Size(min = 2, max = 50)
 	private String first_name;
+	
+	@NotNull
+	@Size(min = 2, max = 50)
 	private String last_name;
+	
+	@NotNull
+	@Email
+	@Column(unique = true, nullable = false)
 	private String email;
+	
+	
+	
+	
+	
+	
 	
 	// JoinColumn의 name이 Employee table에서 FK로써 Project로부터 값을 reference하게 된다
 	// name이 table column의 이름
@@ -56,12 +94,26 @@ public class Employee
 //	private Project project;
 	
 	
-	// ManyToMany이므로 Project변수를 List로 만든다
+	
+	
+	
+	// @ManyToMany이므로 Project변수를 List로 만든다
+	
+	// @JsonIgnore가 하는 일은 List<Project> project변수에 대해서 serialized 되는 것을 ignore한다.
+	// 현재, EmployeeApiController의 getEmployees() 에서 findAll()을 return하는데 type이 Iterable이다. 
+	// Employee와 Project entity들을 보면, 둘 다 List<>의 형태로 서로의 List Object를 갖고 있고, 
+	// 이것은 서로를 serialization한다는 뜻. 
+	// 거의 infinite loop에 빠진다고 보면 되고, 실제로 error도 발생
+	// 그러므로, 서로 Iterable type으로 return을 하기 위해서는 서로 serialized 되는 것을 막기 위하여
+	// @IgnoreJson annotation이 필요하다. 
+	// Project, Employee entity 모두
+	
 	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST}, 
 			fetch = FetchType.LAZY)
 	@JoinTable(name="Project_Employee", 
 	joinColumns=@JoinColumn(name="employeeId"), 
 	inverseJoinColumns=@JoinColumn(name="projectId"))
+	@JsonIgnore
 	private List<Project> project;
 	
 	public Employee() {}

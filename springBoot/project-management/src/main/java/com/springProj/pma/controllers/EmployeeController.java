@@ -61,7 +61,7 @@ public class EmployeeController
 	@GetMapping
 	public String listEmployee(Model model)
 	{
-		List<Employee> list = empService.getAll();
+		Iterable<Employee> list = empService.getAll();
 		model.addAttribute("listEmp", list);
 		
 //		List<Employee> list = empRepo.findAll();

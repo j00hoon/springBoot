@@ -36,7 +36,7 @@ public class ProjectController
 	public String displayProjectForm(Model model)
 	{
 		Project aProject = new Project();
-		List<Employee> employee = empService.getAll();
+		Iterable<Employee> employee = empService.getAll();
 		//List<Employee> employee = empRepo.findAll();
 		
 		model.addAttribute("aProject", aProject);
@@ -93,7 +93,7 @@ public class ProjectController
 	public String listProject(Model model)
 	{
 		//List<Project> list = proRepo.findAll();
-		List<Project> list = proService.getAll();
+		Iterable<Project> list = proService.getAll();
 		model.addAttribute("listProj", list);
 		
 		return "projects/list-project";		

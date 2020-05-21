@@ -20,7 +20,7 @@ public class ProjectService
 
 	
 	
-	public List<Project> getAll() 
+	public Iterable<Project> getAll() 
 	{
 		return proRepo.findAll();
 	}

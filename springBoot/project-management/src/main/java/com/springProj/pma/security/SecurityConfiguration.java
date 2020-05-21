@@ -114,7 +114,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 			// 이렇게하면, 우리가 만든 login page를 이용할 수 있다. default login page 말고. logout page도 가능
 			//.formLogin().loginPage("/login-page") 
 		
-		
+		http.csrf().disable();
 		
 	}
 	
