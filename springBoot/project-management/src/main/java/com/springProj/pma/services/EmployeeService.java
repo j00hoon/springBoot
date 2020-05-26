@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.springProj.pma.dao.EmployeeRepository;
 import com.springProj.pma.dto.EmployeeProject;
+import com.springProj.pma.dto.EmployeeWorkChartData;
 import com.springProj.pma.entity.Employee;
 
 @Service
@@ -33,6 +34,27 @@ public class EmployeeService
 	{
 		return empRepo.employeeProjects();
 	}
+	
+	public Employee findByEmployeeId(long id)
+	{
+		return empRepo.findByEmployeeId(id);
+	}
+	
+	public void deleteById(long id)
+	{
+		empRepo.deleteById(id);
+	}
+	
+	public List<EmployeeWorkChartData> getEmployeeTimeline()
+	{
+		return empRepo.getEmployeeTimeline();
+	}
+	
+	
+	
+	
+	
+	
 	
 	// 2
 //	EmployeeRepository empRepo;

@@ -3,15 +3,12 @@ package com.springProj.pma.security;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -100,10 +97,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
 		// update ~~ set role = 'ROLE_ADMIN' 처럼 앞에 'ROLE_'을 붙여줘야한다
 		// hasAuthority()는 앞에 'ROLE_'이 필요없다
 		http.authorizeRequests()
-			.antMatchers("/projects/new").hasRole("ADMIN")
-			.antMatchers("/projects/save").hasRole("ADMIN")
-			.antMatchers("/employees/new").hasRole("ADMIN")
-			.antMatchers("/employees/save").hasRole("ADMIN")
+			//.antMatchers("/projects/new").hasRole("ADMIN")
+			//.antMatchers("/projects/save").hasRole("ADMIN")
+			//.antMatchers("/employees/new").hasRole("ADMIN")
+			//.antMatchers("/employees/save").hasRole("ADMIN")
 //			.antMatchers("/employees/new").hasAuthority("ADMIN")
 //			.antMatchers("/employees/save").hasAuthority("ADMIN")
 			//.antMatchers("/h2-console/**").permitAll() // h2 DB를 안 쓸 때엔 필요없어

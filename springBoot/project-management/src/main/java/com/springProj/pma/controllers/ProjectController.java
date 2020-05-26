@@ -8,7 +8,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.springProj.pma.dto.TimeChartData;
 import com.springProj.pma.entity.Employee;
 import com.springProj.pma.entity.Project;
 import com.springProj.pma.services.EmployeeService;
@@ -80,6 +84,9 @@ public class ProjectController
 		
 		
 		
+		
+		
+		
 		// Project-Employee ManyToMany relationship에서 따로 code 추가가 필요없는 이유는
 		// hibernate는 smart해서 알아서 manage 해주고, join table에 넣어준다.
 		// 우리는 그저 알맞은 annotation을 써주기만 하면 되는 것.
@@ -98,5 +105,51 @@ public class ProjectController
 		
 		return "projects/list-project";		
 	}
+	
+	
+	
+	@GetMapping("/update")
+	public String updateProject(@RequestParam("id") long id, Model model)
+	{
+		Project aProject = proService.findByProjectId(id);
+		
+		model.addAttribute("aProject", aProject);
+		
+		return "projects/new-project";
+	}
+	
+	
+	
+	@GetMapping("/delete")
+	public String deleteProject(@RequestParam("id") long id, Model model)
+	{
+		proService.deleteByProjectId(id);
+		
+		return "redirect:/projects";
+	}
+	
+	
+	
+	
+	@GetMapping("/timeline")
+	public String getProjectTimeline(Model model) throws JsonProcessingException
+	{
+		List<TimeChartData> proTimelineList = proService.getProjectTimeline();
+		
+		// 최종적으로는 jsonTimeline이 project_name, start_date, end_date를 JSON 형태로 갖고 있는 것
+		// HomeController에서 PieChart 만드는 부분을 참고하면 됨 
+		ObjectMapper objectMapper = new ObjectMapper();
+		String jsonTimeline = objectMapper.writeValueAsString(proTimelineList);
+		
+		
+		
+		model.addAttribute("aProjectTimeline", jsonTimeline);
+		
+		return "projects/timeline-project";
+	}
+	
+	
+	
+	
 	
 }

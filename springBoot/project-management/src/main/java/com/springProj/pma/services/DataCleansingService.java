@@ -1,7 +1,5 @@
 package com.springProj.pma.services;
 
-import org.springframework.stereotype.Service;
-
 // @Service annotation이 있으면, spring framework에서 annotation이 있는 class를 object로 만들어서 context에 추가를 한다
 // @Component annotation도 같은 역할을 한다, @Repository annotation도 같은 역할
 // @Service는 class를 service로써 사용하고 싶은 경우

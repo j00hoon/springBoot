@@ -1,5 +1,6 @@
 package com.springProj.pma.entity;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -33,6 +35,12 @@ public class Project
 	
 	private String project_desc;
 	
+	@NotBlank(message="Date cannot be empty")
+	private Date start_date;
+	
+	@NotBlank(message="Date cannot be empty")
+	private Date end_date;
+	
 	
 	// One to Many relationship -> One Project can have Many Employees
 //	@OneToMany(mappedBy="project")
@@ -49,8 +57,8 @@ public class Project
 	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST}, 
 			fetch = FetchType.LAZY)
 	@JoinTable(name="Project_Employee", 
-	joinColumns=@JoinColumn(name="projectId"), 
-	inverseJoinColumns=@JoinColumn(name="employeeId"))
+	joinColumns=@JoinColumn(name="project_id"), 
+	inverseJoinColumns=@JoinColumn(name="employee_id"))
 	@JsonIgnore
 	private List<Employee> employee;
 	
@@ -59,11 +67,13 @@ public class Project
 		
 	// The constructor has no projectId variable. Why?
 	// Want to make DB generates id number automatically  
-	public Project(String project_name, String project_stage, String project_desc) {
+	public Project(String project_name, String project_stage, String project_desc, Date start_date, Date end_date) {
 		super();
 		this.project_name = project_name;
 		this.project_stage = project_stage;
 		this.project_desc = project_desc;
+		this.start_date = start_date;
+		this.end_date = end_date;
 	}
 	
 	
@@ -78,10 +88,10 @@ public class Project
 		this.employee = employee;
 	}
 
-	public long getProjectId() {
+	public long getProject_id() {
 		return project_id;
 	}
-	public void setProjectId(long project_id) {
+	public void setProject_id(long project_id) {
 		this.project_id = project_id;
 	}
 
@@ -108,6 +118,23 @@ public class Project
 	public void setProject_desc(String project_desc) {
 		this.project_desc = project_desc;
 	}
+
+	public Date getStart_date() {
+		return start_date;
+	}
+
+	public void setStart_date(Date start_date) {
+		this.start_date = start_date;
+	}
+
+	public Date getEnd_date() {
+		return end_date;
+	}
+
+	public void setEnd_date(Date end_date) {
+		this.end_date = end_date;
+	}
+	
 	
 	
 

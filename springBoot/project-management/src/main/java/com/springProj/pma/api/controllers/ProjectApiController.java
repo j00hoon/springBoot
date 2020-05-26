@@ -5,6 +5,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -36,7 +37,7 @@ public class ProjectApiController
 	@GetMapping("/{id}")
 	public Project getProjectById(@PathVariable("id") long id)
 	{
-		return proRepo.findById(id).get();
+		return proRepo.findByProjectId(id);
 	}
 	
 	
@@ -57,10 +58,10 @@ public class ProjectApiController
 	
 	
 	
-	@PutMapping(path = "/{id}", consumes = "application/json")
-	public Project partialupdate(@PathVariable long id, @RequestBody Project patchPro)
+	@PatchMapping(path = "/{id}", consumes = "application/json")
+	public Project partialupdate(@PathVariable("id") long id, @RequestBody Project patchPro)
 	{
-		Project pro = proRepo.findById(id).get();
+		Project pro = proRepo.findByProjectId(id);
 		
 		if(patchPro.getProject_name() != null)
 		{
@@ -82,7 +83,7 @@ public class ProjectApiController
 	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable long id)
+	public void delete(@PathVariable("id") long id)
 	{
 		try
 		{

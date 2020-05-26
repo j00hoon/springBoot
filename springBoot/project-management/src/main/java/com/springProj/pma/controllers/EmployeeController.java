@@ -1,15 +1,24 @@
 package com.springProj.pma.controllers;
 
+
+
+
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.springProj.pma.dao.EmployeeRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.springProj.pma.dto.EmployeeWorkChartData;
 import com.springProj.pma.entity.Employee;
 import com.springProj.pma.services.EmployeeService;
 
@@ -81,9 +90,22 @@ public class EmployeeController
 	}
 	
 
+	
+	// @Valid annotation은 new-employee.html page에서 name들과 email data들의 validation을 check하기 위한 것
+	// Errors도 validation api에서 쓰는 것
+	
 	@PostMapping("/register")
-	public String registerEmployee(Employee emp, Model model)
+	public String registerEmployee(Model model, @Valid Employee emp, Errors errors)
 	{
+		// @Validation annotation으로 error를 check하고 만약에 error가 있으면, 
+		// 다시 new-employee.html로 보낸다
+//		if(errors.hasErrors())
+//		{
+//			return "employees/new-employee";
+//		}// if
+		
+		
+		
 		empService.save(emp);
 		
 		
@@ -92,5 +114,49 @@ public class EmployeeController
 		
 		return "redirect:/employees";
 	}
+	
+	
+	
+	
+	@GetMapping("/update")
+	public String updateEmployee(@RequestParam("id") long id, Model model)
+	{
+		Employee updateEmp = empService.findByEmployeeId(id);
+		
+		model.addAttribute("aEmployee", updateEmp);
+		
+		return "employees/new-employee";
+	}
+	
+	
+	
+	
+	@GetMapping("/delete")
+	public String deleteEmployee(@RequestParam("id") long id, Model model)
+	{
+		empService.deleteById(id);
+		
+		return "redirect:/employees";
+	}
+	
+	
+	
+	
+	
+	@GetMapping("/timeline")
+	public String getEmployeeTimeline(Model model) throws JsonProcessingException
+	{
+		List<EmployeeWorkChartData> list = empService.getEmployeeTimeline();
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		String jsonTimeline = objectMapper.writeValueAsString(list);
+		
+		model.addAttribute("aEmployeeTimeline", jsonTimeline);
+		
+		return "employees/timeline-employee";
+	}
+	
+	
+	
 
 }

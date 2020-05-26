@@ -8,29 +8,77 @@
 
 <nav th:replace = "layouts :: navbarHead"></nav>
 
+
+	<br>
+	
 	<div class="container">
 		<form th:action="@{/projects/save}" method="post" th:object="${aProject}">
 		
-		<input type="text" placeholder="Project Name" th:field="${aProject.project_name}">
 		
-		<select th:field="${aProject.project_stage}">
-			<option th:value="NOTSTARTED"> Not Started</option>
-			<option th:value="INPROGRESS"> In Progress</option>
-			<option th:value="COMPLETED"> Completed</option>
-		</select>
 		
-		<textarea type="text" placeholder="Enter Project Description" th:field="${aProject.project_desc}"></textarea>
+		<div class="form-group row">
 		
-		<!-- $는 project의 name으로 접근할 때, *는 project의 employee property에 접근할 때 -->
-		<!-- *{employee}는 위의 form에서 가져오는 th:object의 part이다  -->
-		<!-- Project.java가 갖고 있는 List<Employee>의 변수 이름이 employee이다. 헷갈리지마 -->
-		<!-- 그냥 $와 쓰는 방법만 다를 뿐. $를 쓰면 aProject.~~ 처럼 object.name으로 접근을 해야하지만, *는  object없이 바로 name으로 접근이 가능 -->
-		<select th:field="*{employee}" multiple="multiple">
-			<option th:each="employee : ${allEmployees}"
-				th:value="${employee.employeeId}" 
-				th:text="${employee.first_name}">
-			</option>			
-		</select>
+		
+			<!-- This will be used to bind to the project that was clicked on (USED FOR UDPATES) -->
+			<!-- list-project에서 update 버튼을 누르면 employee를 update 할 때와 마찬가지로  -->
+			<!-- hidden값으로 id를 넘겨줘야 한다. 그래야 어떤 project를 update하는지 알 수가 있다 -->
+			<input type="hidden" th:field="${aProject.project_id}" />
+			
+			
+			
+			<input type="text" placeholder="Project Name" th:field="${aProject.project_name}">
+		
+		</div>
+		
+		
+		
+		<div class="form-group row">
+		
+			<select th:field="${aProject.project_stage}">
+				<option th:value="NOTSTARTED"> Not Started</option>
+				<option th:value="INPROGRESS"> In Progress</option>
+				<option th:value="COMPLETED"> Completed</option>
+			</select>
+		
+		</div>
+		
+		
+		<div class="form-group row">
+		
+			<textarea type="text" placeholder="Enter Project Description" th:field="${aProject.project_desc}"></textarea>
+		</div>
+		
+		
+		
+		<div class="form-group row">
+			<!-- $는 project의 name으로 접근할 때, *는 project의 employee property에 접근할 때 -->
+			<!-- *{employee}는 위의 form에서 가져오는 th:object의 part이다  -->
+			<!-- Project.java가 갖고 있는 List<Employee>의 변수 이름이 employee이다. 헷갈리지마 -->
+			<!-- 그냥 $와 쓰는 방법만 다를 뿐. $를 쓰면 aProject.~~ 처럼 object.name으로 접근을 해야하지만, *는  object없이 바로 name으로 접근이 가능 -->
+			<select th:field="*{employee}" multiple="multiple">
+				<option th:each="employee : ${allEmployees}"
+					th:value="${employee.employee_id}" 
+					th:text="${employee.first_name}">
+				</option>			
+			</select>
+		</div>
+		
+		
+		
+		Project Start Date : 
+		<div class="form-group row">
+			<input id="dp3" type="text" class="mb-4 col-2 col-xs-4" value="Start Date" th:field="${aProject.start_date}">
+		</div>
+		
+		Project End Date : 
+		<div class="form-group row">
+			<input id="dp4" type="text" class="mb-4 col-2 col-xs-4" value="End Date" th:field="${aProject.end_date}">
+		</div>
+		
+		<script type="text/javascript">
+			$('#dp3').datepicker();
+			$('#dp4').datepicker();
+		</script>
 		
 		
 		
@@ -48,7 +96,9 @@
 				
 		
 		
-		<button type="submit">Create Project</button>
+		<button type="submit" class="btn btn-info col-2" >Enter Project</button>
+		
+		
 		
 		</form>
 	</div>

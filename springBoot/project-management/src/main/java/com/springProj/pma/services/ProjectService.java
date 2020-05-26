@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.springProj.pma.dao.ProjectRepository;
 import com.springProj.pma.dto.ProjectStage;
+import com.springProj.pma.dto.TimeChartData;
 import com.springProj.pma.entity.Project;
 
 @Service
@@ -35,6 +36,20 @@ public class ProjectService
 		return proRepo.projectStage();
 	}
 	
+	public Project findByProjectId(long id)
+	{
+		return proRepo.findByProjectId(id);
+	}
+	
+	public void deleteByProjectId(long id)
+	{
+		proRepo.deleteById(id);
+	}
+	
+	public List<TimeChartData> getProjectTimeline()
+	{
+		return proRepo.getProjectTimeline();
+	}
 	
 	
 }

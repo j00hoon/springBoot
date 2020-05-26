@@ -1,17 +1,7 @@
 package com.springProj.pma;
 
-import java.util.Arrays;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-
-import com.springProj.pma.dao.EmployeeRepository;
-import com.springProj.pma.dao.ProjectRepository;
-import com.springProj.pma.entity.Employee;
-import com.springProj.pma.entity.Project;
 
 @SpringBootApplication
 public class ProjectManagementApplication 

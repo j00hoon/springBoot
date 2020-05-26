@@ -1,9 +1,9 @@
 package com.springProj.pma.entity;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,10 +14,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.springProj.pma.validation.UniqueValue;
 
 @Entity
 public class Employee 
@@ -57,21 +58,29 @@ public class Employee
 	// Error가 나는 시점이 다른 것
 	
 	
-	@NotNull
+	//@NotNull
+	@NotBlank
 	@Size(min = 2, max = 50)
 	private String first_name;
 	
-	@NotNull
-	@Size(min = 2, max = 50)
+	//@NotNull
+	@NotBlank(message="Musge give a last name")
+	@Size(min = 2, max = 50, message = "last name size messages")
 	private String last_name;
 	
-	@NotNull
-	@Email
-	@Column(unique = true, nullable = false)
+	//@NotNull
+	@NotBlank
+	//@Column(unique = true, nullable = false)  // custom validator를 적용 ==> @UniqueValue
+	@Email(message="Must be a valid email address")
+	@UniqueValue	
 	private String email;
 	
 	
+	@NotBlank
+	private Date start_date;
 	
+	@NotBlank
+	private Date end_date;
 	
 	
 	
@@ -90,7 +99,7 @@ public class Employee
 	// In general, always use LAZY
 //	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST}, 
 //			fetch = FetchType.LAZY)
-//	@JoinColumn(name="project_id")
+//	@JoinColumn(name="projectId")
 //	private Project project;
 	
 	
@@ -111,19 +120,21 @@ public class Employee
 	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST}, 
 			fetch = FetchType.LAZY)
 	@JoinTable(name="Project_Employee", 
-	joinColumns=@JoinColumn(name="employeeId"), 
-	inverseJoinColumns=@JoinColumn(name="projectId"))
+	joinColumns=@JoinColumn(name="employee_id"), 
+	inverseJoinColumns=@JoinColumn(name="project_id"))
 	@JsonIgnore
 	private List<Project> project;
 	
 	public Employee() {}
 	
-	public Employee(String first_name, String last_name, String email) 
+	public Employee(String first_name, String last_name, String email, Date start_date, Date end_date) 
 	{
 		super();
 		this.first_name = first_name;
 		this.last_name = last_name;
 		this.email = email;
+		this.start_date = start_date;
+		this.end_date = end_date;
 	}
 	
 	
@@ -143,11 +154,11 @@ public class Employee
 		this.project = project;
 	}
 	
-	public long getEmployeeId() {
+	public long getEmployee_id() {
 		return employee_id;
 	}
 
-	public void setEmployeeId(long employee_id) {
+	public void setEmployee_id(long employee_id) {
 		this.employee_id = employee_id;
 	}
 
@@ -176,6 +187,24 @@ public class Employee
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public Date getStart_date() {
+		return start_date;
+	}
+
+	public void setStart_date(Date start_date) {
+		this.start_date = start_date;
+	}
+
+	public Date getEnd_date() {
+		return end_date;
+	}
+
+	public void setEnd_date(Date end_date) {
+		this.end_date = end_date;
+	}
+	
+	
 	
 	
 	

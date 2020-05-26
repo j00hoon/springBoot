@@ -4,6 +4,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,7 +50,7 @@ public class EmployeeApiController
 	@GetMapping("/{id}")
 	public Employee getEmployeeById(@PathVariable("id") long id)
 	{
-		return empRepo.findById(id).get();
+		return empRepo.findByEmployeeId(id);
 	}
 	
 	
@@ -102,7 +105,7 @@ public class EmployeeApiController
 	@PatchMapping(path = "/{id}", consumes = "application/json")
 	public Employee partialupdate(@PathVariable("id") long id, @RequestBody @Valid Employee patchEmp)
 	{
-		Employee emp = empRepo.findById(id).get();
+		Employee emp = empRepo.findByEmployeeId(id);
 		
 		// email에 실제로 update가 있었는지 확인하는 if
 		if(patchEmp.getEmail() != null)
@@ -139,6 +142,31 @@ public class EmployeeApiController
 				
 	}
 	
+	
+	
+	
+	// @GetMapping에서 "page"는 page를 뜻하고, 
+	// "size"는 해당하는 "page"에서 display할 data의 개수?라고 보면 된다
+	// "page"는 0부터 시작
+	
+	// @RequestParam을 사용하는 방법은 postman get에서 
+	// http://localhost:8080/app-api/employees/?page=0&size=6
+	// 위와 같이 url을 get method로 send하면 된다 
+	// page 0, 그리고 data size는 6개씩 잘라서 보여줘! 라는 소리
+	
+	@GetMapping(params= {"page", "size"})
+	@ResponseStatus(HttpStatus.OK)
+	public Iterable<Employee> findPaginatedEmployees(@RequestParam("page") int page, @RequestParam("size") int size)
+	{
+		Pageable pageAndSize = PageRequest.of(page, size);
+		
+		
+		// EmployeeRepository에서 PagingAndSortingRepository를 extends한다 
+		// PagingAndSortingRepository에서 findAll(Pageable)을 override해서 사용하므로, 
+		// pageAndSize 변수 그대로 사용할 수 있는 것
+		
+		return empRepo.findAll(pageAndSize);
+	}
 	
 	
 	

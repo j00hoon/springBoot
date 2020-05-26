@@ -8,12 +8,69 @@
 
 <nav th:replace = "layouts :: navbarHead"></nav>
 
+	
+	<br>
 	<div class="container">
+	
 		<form th:action="@{/employees/register}" method="post" th:object="${aEmployee}">
 		
+		<!-- This will be used to bind to the employee that was clicked on (USED FOR UDPATES) -->
+		<!-- list-employee.html에서 "update" 버튼을 눌렀을 경우, 이 page로 옴 -->
+		<!-- 그 때, 어떤 employee를 눌렀는지 알기 위하여 employee ID를 hidden으로 넘겨야 한다 -->
+		<!-- 이 hidden input data가 없으면, 그냥 평범한 new employee 만들기이다 -->
+		<input type="hidden" th:field="${aEmployee.employee_id}" />
+		
+		
+		
+		<div class="form-group row">
+		
 			<input type="text" placeholder="First Name" th:field="${aEmployee.first_name}">
+			<!-- #fields.hasErrors 이것은 error check를 위한 java code이다 -->
+			<!-- hasErrors('first_name') 이 부분에서 'first_name'만 써도 되는 이유는 spring framework가 똑똑하므로   -->
+			<!-- 'first_name' field에 error가 있으면  -->
+			<!-- 여기에서 말하는 error란 Employee entity에 써있는? 정의되어 있는? rule에 위반되는 것들을 말한다  -->
+			<!-- 현재의 Employee entity를 보면 @NotNull과 @Size annotation이 있으므로, 이 2가지에 대해서 error check를 하게 된다  -->
+			<span th:if="${#fields.hasErrors('first_name')}"
+				th:errors="${aEmployee.first_name}"></span>
+				
+						
+				 
+			&nbsp;&nbsp;&nbsp;
+			
+						
 			<input type="text" placeholder="Last Name" th:field="${aEmployee.last_name}">
+			<span th:if="${#fields.hasErrors('last_name')}"
+				th:errors="${aEmployee.last_name}"></span>
+			
+		</div>
+		
+		
+		
+		<div class="form-group row">
 			<input type="text" placeholder="Email" th:field="${aEmployee.email}">
+			<span th:if="${#fields.hasErrors('email')}"
+				th:errors="${aEmployee.email}"></span>
+		</div>
+		
+		
+		
+		
+		Employee Start Date : 
+		<div class="form-group row">
+			<input type="text" id="edp3" class="mb-4 col-2 col-xs-4" value="Start Date" th:field="${aEmployee.start_date}">
+		</div>
+		
+		Employee End Date : 
+		<div class="form-group row">
+			<input type="text" id="edp4" class="mb-4 col-2 col-xs-4" value="End Date" th:field="${aEmployee.end_date}">
+		</div>
+		
+		
+		
+		<script type="text/javascript">
+			$('#edp3').datepicker();
+			$('#edp4').datepicker();
+		</script>
 			
 			
 			
@@ -32,9 +89,13 @@
 			
 			
 			
-			<button type="submit">Register Employee</button>
+			<button type="submit" class="btn btn-info col-2" >Enter Employee</button>
+		
+		
 		
 		</form>
+		
+		
 	</div>
 
 
