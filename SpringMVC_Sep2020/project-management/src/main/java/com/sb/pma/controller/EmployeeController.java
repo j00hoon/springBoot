@@ -16,8 +16,28 @@ import com.sb.pma.entities.Employee;
 @RequestMapping("/employees")
 public class EmployeeController 
 {
-	@Autowired
+	// Field Injection
+//	@Autowired
 	EmployeeRepository empRepo;
+	
+	
+	
+	// Constructor Injection
+	public EmployeeController(EmployeeRepository empRepo)
+	{
+		this.empRepo = empRepo;
+	}
+	
+	
+	// Setter Injection
+//	@Autowired
+//	public void setEmpRepo(EmployeeRepository empRepo) 
+//	{
+//		this.empRepo = empRepo;
+//	}
+	
+	
+	
 	
 	
 	@GetMapping("/new")
@@ -29,6 +49,8 @@ public class EmployeeController
 		return "employees/new-employee";
 	}
 	
+	
+
 	@PostMapping("/save")
 	public String createEmployee(Employee emp, Model model)
 	{
